@@ -1,15 +1,15 @@
-import avatar1 from "../assets/images/Number=106.svg";
-import avatar2 from "../assets/images/Number=4.svg";
-import avatar3 from "../assets/images/Number=11.svg";
-import avatar4 from "../assets/images/Number=39.svg";
-import avatar5 from "../assets/images/Number=42.svg";
-import avatar6 from "../assets/images/Number=51.svg";
-import avatar7 from "../assets/images/Number=54.svg";
-import avatar8 from "../assets/images/Number=70.svg";
-import avatar9 from "../assets/images/Number=75.svg";
-import avatar10 from "../assets/images/Number=95.svg";
-import avatar11 from "../assets/images/Number=110.svg";
-import avatar12 from "../assets/images/Number=112.svg";
+import avatar1 from "public/Number=106.svg";
+import avatar2 from "public/Number=4.svg";
+import avatar3 from "public/Number=11.svg";
+import avatar4 from "public/Number=39.svg";
+import avatar5 from "public/Number=42.svg";
+import avatar6 from "public/Number=51.svg";
+import avatar7 from "public/Number=54.svg";
+import avatar8 from "public/Number=70.svg";
+import avatar9 from "public/Number=75.svg";
+import avatar10 from "public/Number=95.svg";
+import avatar11 from "public/Number=110.svg";
+import avatar12 from "public/Number=112.svg";
 
 export const avatars = [
   avatar1,
