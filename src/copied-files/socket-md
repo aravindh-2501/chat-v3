@@ -1,0 +1,136 @@
+import { io } from "socket.io-client";
+import { create } from "zustand";
+import { playAudioNotification } from "../utils/audioNotification";
+import { markMessageAsDelivered } from "../services/messageService";
+import { useUserStore } from "./userStore";
+
+const socketUrl = import.meta.env.VITE_APP_SOCKET_URL;
+
+export const useSocketStore = create((set, get) => ({
+  socket: null,
+  isTyping: false,
+  messages: [],
+  users: [],
+  typingReceiverId: null,
+
+  connectSocket: () => {
+    const { currentUser, token } = useUserStore.getState();
+
+    if (get().socket) return;
+
+    const socketInstance = io(socketUrl);
+
+    set({ socket: socketInstance });
+
+    socketInstance.on("connect", () => {
+      console.log("Socket connected", `${socketInstance.id}`);
+      if (currentUser && token) {
+        socketInstance.emit("register_user", {
+          userId: currentUser._id,
+          token,
+        });
+      }
+    });
+
+    socketInstance.on("disconnect", () => {
+      console.log("Socket disconnected");
+    });
+
+    socketInstance.on("typing", (data) => {
+      const { currentUser } = useUserStore.getState();
+      if (data?.sender !== currentUser?._id) {
+        set({ typingReceiverId: data?.sender, isTyping: data?.typing });
+      }
+    });
+
+    socketInstance.on("stop_typing", (data) => {
+      const { currentUser } = useUserStore.getState();
+      if (data?.sender !== currentUser?._id) {
+        set({ typingReceiverId: null, isTyping: false });
+      }
+    });
+
+    socketInstance.on("receive_message", (message) => {
+      console.log("Message received", message);
+
+      set((state) => ({
+        messages: [...state.messages, { ...message, status: "delivered" }],
+      }));
+
+      playAudioNotification();
+
+      markMessageAsDelivered(message._id);
+
+      socketInstance.emit("message_delivered", {
+        messageId: message._id,
+        receiverId: message.receiver,
+      });
+    });
+
+    socketInstance.on("status_updated", (updatedMessage) => {
+      set((state) => ({
+        messages: state.messages.map((message) =>
+          message._id === updatedMessage._id
+            ? { ...message, status: updatedMessage.status }
+            : message
+        ),
+      }));
+    });
+
+    socketInstance.on("user_list", (users) => set({ users }));
+  },
+
+  disconnectSocket: () => {
+    const socket = get().socket;
+    if (socket) {
+      socket.disconnect();
+      set({ socket: null, isTyping: false, messages: [], users: [] });
+    }
+  },
+
+  addMessage: (newMessages) => {
+    console.log("newMessages", newMessages);
+    set((state) => ({
+      messages: [
+        ...state.messages,
+        ...(Array.isArray(newMessages)
+          ? newMessages.map((msg) => ({ ...msg, status: "pending" }))
+          : [{ ...newMessages, status: "pending" }]),
+      ],
+    }));
+  },
+
+  updateMessageStatus: (temporaryId, realId, status) => {
+    set((state) => {
+      const updatedMessages = state.messages.map((message) =>
+        message._id === temporaryId
+          ? { ...message, _id: realId, status }
+          : message
+      );
+
+      return { messages: updatedMessages };
+    });
+  },
+
+  startTyping: (receiverId) => {
+    const socket = get().socket;
+    const { currentUser } = useUserStore.getState();
+    if (socket && currentUser) {
+      socket.emit("typing", {
+        sender: currentUser._id,
+        receiver: receiverId,
+      });
+    }
+  },
+
+  stopTyping: (receiverId) => {
+    const socket = get().socket;
+    const { currentUser } = useUserStore.getState();
+    if (socket && currentUser) {
+      socket.emit("stop_typing", {
+        sender: currentUser._id,
+        receiver: receiverId,
+      });
+    }
+  },
+}));
