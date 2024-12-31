@@ -87,29 +87,34 @@ const ChatSidebar = () => {
       {/* User Profile Section */}
       <div className="flex items-center justify-between border-b border-gray-600 pb-2">
         <div
-          className="flex items-center"
+          className="flex items-center justify-between w-full"
           onClick={() => {
             navigate("/profile");
           }}
         >
-          <div className="avatar w-12 h-12">
-            <img
-              className="rounded-full"
-              src={
-                user?.avatar ||
-                "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-              }
-              alt="User Avatar"
-            />
+          <div className="flex items-center">
+            <div className="avatar w-12 h-12">
+              <img
+                className="rounded-full"
+                src={
+                  user?.avatar ||
+                  "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                }
+                alt="User Avatar"
+              />
+            </div>
+            <div className="ml-3 flex flex-col">
+              <p className="text-primary text-sm">
+                {user?.username || "Anonymous"}
+              </p>
+              <p className="text-secondary text-xs">
+                {user?.email || "No Email Available"}
+              </p>
+            </div>
           </div>
-          <div className="ml-3 flex flex-col">
-            <p className="text-primary text-sm">
-              {user?.username || "Anonymous"}
-            </p>
-            <p className="text-secondary text-xs">
-              {user?.email || "No Email Available"}
-            </p>
-          </div>
+          <button className="border border-primary rounded-lg text-sm px-2.5 py-2 font-normal ">
+            Change Profile
+          </button>
         </div>
       </div>
 
