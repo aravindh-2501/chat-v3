@@ -64,6 +64,7 @@ export const useSocketStore = create((set, get) => ({
 
     // Handle receiving new messages
     socketInstance.on("receive_message", (message) => {
+      console.log("messagee", message);
       const { currentUser } = useUserStore.getState();
 
       // Play notification if the sender is not the current user

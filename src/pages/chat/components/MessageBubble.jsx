@@ -3,6 +3,7 @@ import moment from "moment";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import getStatusIcon from "../../../function/getStatusIcon";
 import ChatMessageMenu from "./ChatMessageMenu";
+import { MessageType } from "./message-type/MessageType";
 
 const MessageBubble = ({ message, currentUser, SelectedUser }) => {
   const [activeMenu, setActiveMenu] = useState(null);
@@ -63,7 +64,7 @@ const MessageBubble = ({ message, currentUser, SelectedUser }) => {
             </div>
             <div className="max-w-[80%]">
               <div className="flex gap-2 items-start text-white">
-                <p
+                {/* <p
                   className={`text-sm p-3 shadow-md rounded-tl-[20px] rounded-tr-[20px] rounded-br-[20px] rounded-bl-[0px] ${
                     message.isDeleted
                       ? "bg-gray-300 text-gray-800 italic font-medium"
@@ -78,7 +79,11 @@ const MessageBubble = ({ message, currentUser, SelectedUser }) => {
                   ) : (
                     message.text
                   )}
-                </p>
+                </p> */}
+                <MessageType
+                  message={message}
+                  handleMenuOpen={handleMenuOpen}
+                />
               </div>
               <div className="flex items-center mt-2 space-x-2">
                 <p className="text-xs text-gray-400">
@@ -93,6 +98,7 @@ const MessageBubble = ({ message, currentUser, SelectedUser }) => {
           <div className="flex items-center justify-end space-x-3">
             <div className="max-w-[80%]">
               <div className="flex gap-2 items-start text-white">
+                <img src={message.content[0]} alt="" className="w-11" />
                 {message.isDeleted ? (
                   ""
                 ) : (
@@ -104,7 +110,7 @@ const MessageBubble = ({ message, currentUser, SelectedUser }) => {
                     <EllipsisVerticalIcon className="h-5 w-5 text-white" />
                   </div>
                 )}
-                <p
+                {/* <p
                   className={`text-sm p-3 shadow-md rounded-tl-[20px] rounded-tr-[20px] rounded-br-[0px] rounded-bl-[20px] ${
                     message.isDeleted
                       ? "bg-gray-300 text-gray-800 italic font-medium"
@@ -119,7 +125,11 @@ const MessageBubble = ({ message, currentUser, SelectedUser }) => {
                   ) : (
                     message.text
                   )}
-                </p>
+                </p> */}
+                <MessageType
+                  message={message}
+                  handleMenuOpen={handleMenuOpen}
+                />
               </div>
               <div className="flex items-center mt-2 space-x-2">
                 {getStatusIcon(message.status)}

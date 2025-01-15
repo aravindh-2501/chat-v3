@@ -1,0 +1,38 @@
+const MessageType = ({ handleMenuOpen, message }) => {
+  return (
+    <div
+      className={`text-sm p-3 shadow-md rounded-tl-[20px] rounded-tr-[20px] rounded-br-[20px] rounded-bl-[0px] ${
+        message.isDeleted
+          ? "bg-gray-300 text-gray-800 italic font-medium"
+          : "bg-neutral text-white"
+      }`}
+      onContextMenu={(e) => handleMenuOpen(e)}
+    >
+      {message.isDeleted ? (
+        <span className="flex whitespace-nowrap">
+          This message has been deleted
+        </span>
+      ) : (
+        <>
+          {message.type === "text" && <span>{message.text}</span>}
+          {message.type === "image" && (
+            <img
+              src={message.content}
+              alt="Message Content"
+              className="rounded-lg max-w-full h-auto"
+            />
+          )}
+          {message.type === "video" && (
+            <video
+              controls
+              className="rounded-lg max-w-full h-auto"
+              src={message.content}
+            />
+          )}
+        </>
+      )}
+    </div>
+  );
+};
+
+export { MessageType };
