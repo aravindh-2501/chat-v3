@@ -98,7 +98,7 @@ const MessageBubble = ({ message, currentUser, SelectedUser }) => {
           <div className="flex items-center justify-end space-x-3">
             <div className="max-w-[80%]">
               <div className="flex gap-2 items-start text-white">
-                <img src={message.content[0]} alt="" className="w-11" />
+                <img src={message?.content[0]} alt="" className="w-11" />
                 {message.isDeleted ? (
                   ""
                 ) : (

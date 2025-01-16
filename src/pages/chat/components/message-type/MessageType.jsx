@@ -1,5 +1,4 @@
 const MessageType = ({ handleMenuOpen, message }) => {
-  // console.log({ message });
   return (
     <div
       className={`text-sm p-3 shadow-md rounded-tl-[20px] rounded-tr-[20px] rounded-br-[20px] rounded-bl-[0px] ${
